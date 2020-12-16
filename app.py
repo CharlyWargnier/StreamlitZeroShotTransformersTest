@@ -59,7 +59,7 @@ df = pd.read_csv('google_results.csv', usecols=['content'])
 st.write(df)
 
 #candidate_labels = ["renewable", "politics", "emission", "temperature", "emergency", "advertisment"]
-candidate_labels = ["PPC", "Google", "climate"]
+candidate_labels = ["PPC", "Google", "SEO"]
 #candidate_labels = ["spam", "advertisment", "informational"]
 candidate_results = [0, 0, 0, 0, 0, 0]
 
