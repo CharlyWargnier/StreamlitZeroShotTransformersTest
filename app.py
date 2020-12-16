@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 from transformers import pipeline
 import streamlit as st
+from numpy import argmax
+
 
 # Download models ##########################
 
@@ -19,23 +21,65 @@ import streamlit as st
 # pose sequence as a NLI premise and label as a hypothesis
 # SMALLER MODEL!!!!!!!!
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
-#nli_model = AutoModelForSequenceClassification.from_pretrained('valhalla/distilbart-mnli-12-3')
+nli_model = AutoModelForSequenceClassification.from_pretrained('valhalla/distilbart-mnli-12-3')
 tokenizer = AutoTokenizer.from_pretrained('valhalla/distilbart-mnli-12-3')
 model='valhalla/distilbart-mnli-12-3'
 
-#tokenizer = AutoTokenizer.from_pretrained("bart-large-mnli")
-#model = AutoModelForSequenceClassification.from_pretrained("bart-large-mnli")
 
+st.title("One Shot Classifier")
 
 # CPU based operations
 #classifier = pipeline("zero-shot-classification", model='valhalla/distilbart-mnli-12-3')
 # CPU based operations - lighter model "distilbart-mnli"
 classifier = pipeline("zero-shot-classification", model='valhalla/distilbart-mnli-12-3')
+
+#classifier = pipeline("zero-shot-classification")
 # GPU based operations
 #classifier = pipeline("zero-shot-classification", device=0) # to utilize GPU
 
-st.title("One Shot Classifier")
+#c32, c33 = st.beta_columns(2)
+#
+#
+#with c33:
 
+with st.beta_expander("candidate_labels 02", expanded=False):
+    st.write("shoes")
+    st.write("beaches")
+    st.write("cars")
+
+###################
+
+
+MAX_LINES = 10
+
+text = st.text_area("keyword, one per line.", height=150)
+lines = text.split("\n")  # A list of lines
+
+if len(lines) > MAX_LINES:
+    st.warning(f"Maximum number of lines reached. Only the first {MAX_LINES} will be processed.")
+    lines = lines[:MAX_LINES]
+
+for line in lines:
+    data = pd.DataFrame({'url':lines})
+
+if not text:
+    st.warning('Paste some keywords.')
+    st.stop()
+
+
+datalist = data.url.tolist()
+
+datalistDeduped = [] 
+Variable = [datalistDeduped.append(x) for x in datalist if x not in datalistDeduped] 
+
+blocklist = {'',' ','-'}
+
+candidate_labels = [x for x in datalistDeduped if x not in blocklist]
+
+st.write("candidate_labels")
+st.write(candidate_labels)
+
+#st.stop()
 
 import pandas as pd
 
@@ -55,15 +99,20 @@ from transformers import pipeline
 
 
 #df = pd.read_csv('/content/google_results.csv', usecols=['content'], nrows=50)
-df = pd.read_csv('google_results.csv', usecols=['content'])
+#df = pd.read_csv('google_results.csv', usecols=['content'])
+
+#df = pd.read_csv('macysTest50.csv', usecols=['content'])
+
+df = pd.read_csv('macysTest50.csv', usecols=['content'], encoding = 'utf8')
+#df = pd.read_csv('macysTest30.csv', usecols=['content'], encoding = 'utf8')
+
 st.write(df)
 
 #candidate_labels = ["renewable", "politics", "emission", "temperature", "emergency", "advertisment"]
-candidate_labels = ["PPC", "Google", "SEO"]
+#candidate_labels = ["SEO", "social", "link"]
 #candidate_labels = ["spam", "advertisment", "informational"]
 candidate_results = [0, 0, 0, 0, 0, 0]
 
-from numpy import argmax
 
 for sent in df['content'].values:
     # To do multi-class classification, simply pass multi_class=True.
@@ -133,26 +182,26 @@ with c31:
 
 ###################
 
-c32, c33 = st.beta_columns(2)
-
-with c32:
-	with st.beta_expander("candidate_labels 01", expanded=False):
-		st.write("shoe")
-		st.write("sea")
-		st.write("automotive")
-
-with c33:
-	with st.beta_expander("candidate_labels 02", expanded=False):
-		st.write("shoes")
-		st.write("beaches")
-		st.write("cars")
+#c32, c33 = st.beta_columns(2)
+#
+#with c32:
+#	with st.beta_expander("candidate_labels 01", expanded=False):
+#		st.write("shoe")
+#		st.write("sea")
+#		st.write("automotive")
+#
+#with c33:
+#	with st.beta_expander("candidate_labels 02", expanded=False):
+#		st.write("shoes")
+#		st.write("beaches")
+#		st.write("cars")
 
 ###################
 
 
 MAX_LINES = 10
 
-text = st.text_area("keyword, one per line.", height=150)
+text = st.text_area("Label, one per line.", height=150)
 lines = text.split("\n")  # A list of lines
 
 if len(lines) > MAX_LINES:
