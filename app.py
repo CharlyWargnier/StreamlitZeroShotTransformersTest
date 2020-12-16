@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from transformers import pipeline
+#from transformers import pipeline
 import streamlit as st
 from numpy import argmax
 
@@ -20,10 +20,10 @@ from numpy import argmax
 
 # pose sequence as a NLI premise and label as a hypothesis
 # SMALLER MODEL!!!!!!!!
-#from transformers import AutoModelForSequenceClassification, AutoTokenizer
-#nli_model = AutoModelForSequenceClassification.from_pretrained('valhalla/distilbart-mnli-12-3')
-#tokenizer = AutoTokenizer.from_pretrained('valhalla/distilbart-mnli-12-3')
-#model='valhalla/distilbart-mnli-12-3'
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
+nli_model = AutoModelForSequenceClassification.from_pretrained('valhalla/distilbart-mnli-12-3')
+tokenizer = AutoTokenizer.from_pretrained('valhalla/distilbart-mnli-12-3')
+model='valhalla/distilbart-mnli-12-3'
 
 
 st.title("One Shot Classifier")
