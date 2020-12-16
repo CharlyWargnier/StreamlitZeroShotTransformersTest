@@ -21,9 +21,9 @@ from numpy import argmax
 # pose sequence as a NLI premise and label as a hypothesis
 # SMALLER MODEL!!!!!!!!
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
-nli_model = AutoModelForSequenceClassification.from_pretrained('valhalla/distilbart-mnli-12-3')
-tokenizer = AutoTokenizer.from_pretrained('valhalla/distilbart-mnli-12-3')
-model='valhalla/distilbart-mnli-12-3'
+#nli_model = AutoModelForSequenceClassification.from_pretrained('valhalla/distilbart-mnli-12-3')
+#tokenizer = AutoTokenizer.from_pretrained('valhalla/distilbart-mnli-12-3')
+#model='valhalla/distilbart-mnli-12-3'
 
 
 st.title("One Shot Classifier")
